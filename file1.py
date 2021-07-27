@@ -3,13 +3,22 @@ import numpy as np
 import cv2
 
 
-image = cv2.imread("./picture_flo.jpg")
+img = cv2.cvtColor(cv2.imread("./picture_flo.jpg"), cv2.COLOR_BGR2RGB)
+imgGrey = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-img = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+#cv2.rectangle(imgGrey, (1000, 5000), (2000, 4000), (240, 240, 240), 20)
+#plt.imshow(imgGrey, "gray")
+# plt.show()
+
+classifier = cv2.CascadeClassifier("./haarcascade_frontalface_alt2.xml")
+faces = classifier.detectMultiScale(imgGrey, minNeighbors=10)
 
 
-imgGrey = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+for face in faces:
+    x, y, w, h = face
+    cv2.rectangle(img, (x, y), (x+w, y+h), (0, 255, 0), 10)
+    print(faces)
 
-cv2.rectangle(imgGrey, (1000, 5000), (2000, 4000), (240, 240, 240), 20)
-plt.imshow(imgGrey, "gray")
+
+plt.imshow(img)
 plt.show()
